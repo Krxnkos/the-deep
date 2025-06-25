@@ -1,0 +1,4 @@
+pygame
+rich
+colorama
+json5
