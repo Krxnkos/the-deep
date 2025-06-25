@@ -10,4 +10,4 @@ from .player import Player
 # Initialize game components
 game_engine = GameEngine()
 game_state = GameState()
-player = Player()
+player = Player("Explorer")  # Provide a default name for the player

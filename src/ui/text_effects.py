@@ -1,3 +1,7 @@
+import sys
+import time
+import os
+
 def print_typing_effect(text, delay=0.05):
     """
     Prints text with a typing effect.
@@ -6,9 +10,6 @@ def print_typing_effect(text, delay=0.05):
         text (str): The text to print.
         delay (float): The delay between each character.
     """
-    import sys
-    import time
-
     for char in text:
         sys.stdout.write(char)
         sys.stdout.flush()
@@ -72,3 +73,66 @@ def print_menu(options, selected_index):
             print(f"> {print_bold(option)}")
         else:
             print(f"  {option}")
+
+def typewriter_effect(text, delay=0.03):
+    """
+    Display text with a typewriter effect.
+    
+    Args:
+        text (str): The text to display
+        delay (float): Delay between characters in seconds
+    """
+    for char in text:
+        sys.stdout.write(char)
+        sys.stdout.flush()
+        time.sleep(delay)
+    print()
+
+def fade_in_text(text, steps=10, delay=0.05):
+    """
+    Display text with a fade-in effect using console brightness.
+    
+    Args:
+        text (str): The text to display
+        steps (int): Number of brightness steps
+        delay (float): Delay between steps in seconds
+    """
+    os.system('cls' if os.name == 'nt' else 'clear')
+    
+    # Create brightness levels using characters of increasing "weight"
+    brightness_levels = [
+        ' ', '.', ':', '-', '=', '+', '*', '#', '%', '@'
+    ]
+    
+    for level in range(steps):
+        os.system('cls' if os.name == 'nt' else 'clear')
+        brightness_char = brightness_levels[min(level, len(brightness_levels)-1)]
+        for line in text.split('\n'):
+            print(line.replace('@', brightness_char))
+        time.sleep(delay)
+    
+    # Final display with actual text
+    os.system('cls' if os.name == 'nt' else 'clear')
+    print(text)
+
+def horror_text_effect(text, flicker_count=3, delay=0.1):
+    """
+    Display text with a horror-themed flickering effect.
+    
+    Args:
+        text (str): The text to display
+        flicker_count (int): Number of flickers
+        delay (float): Delay between flickers in seconds
+    """
+    
+    # Display the text with flickering effect
+    for i in range(flicker_count):
+        os.system('cls' if os.name == 'nt' else 'clear')
+        print(text)
+        time.sleep(delay)
+        
+        os.system('cls' if os.name == 'nt' else 'clear')
+        time.sleep(delay / 2)
+    
+    # Final display
+    print(text)
