@@ -2,3 +2,4 @@ pygame
 rich
 colorama
 json5
+keyboard

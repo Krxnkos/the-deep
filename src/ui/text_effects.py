@@ -74,19 +74,36 @@ def print_menu(options, selected_index):
         else:
             print(f"  {option}")
 
-def typewriter_effect(text, delay=0.03):
+def typewriter_effect(text, delay=0.03, status_bar_refresh=None):
     """
     Display text with a typewriter effect.
     
     Args:
         text (str): The text to display
         delay (float): Delay between characters in seconds
+        status_bar_refresh (function): Optional function to refresh the status bar
     """
-    for char in text:
+    # Process text to handle potential formatting issues
+    lines = text.split("\n")
+    processed_lines = []
+    
+    # Clean up indentation to prevent formatting issues
+    for line in lines:
+        if line.strip():  # Skip empty lines
+            processed_lines.append(line.lstrip())
+    
+    # Join back into a single string
+    processed_text = "\n".join(processed_lines)
+    
+    # Print the text character by character
+    for char in processed_text:
         sys.stdout.write(char)
         sys.stdout.flush()
         time.sleep(delay)
-    print()
+    
+    # Ensure a newline at the end
+    if not processed_text.endswith("\n"):
+        print()
 
 def fade_in_text(text, steps=10, delay=0.05):
     """

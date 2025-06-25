@@ -1,7 +1,8 @@
 import random
 
 class Enemy:
-    def __init__(self, id, name, description, health, damage, loot=None):
+    """Base class for all enemies in the game."""
+    def __init__(self, id, name, description, health, damage, loot=None, attack_range=(5, 15), threat_level=0.5):
         self.id = id
         self.name = name
         self.description = description
@@ -9,11 +10,12 @@ class Enemy:
         self.health = health
         self.damage = damage
         self.loot = loot or []  # List of possible item IDs to drop
+        self.attack_min, self.attack_max = attack_range
+        self.threat_level = threat_level  # Add this attribute (0.0 to 1.0)
     
     def attack(self):
-        """Enemy attacks player"""
-        damage_dealt = random.randint(max(1, self.damage - 5), self.damage + 5)
-        return damage_dealt, f"The {self.name} attacks for {damage_dealt} damage!"
+        """Return damage for an attack"""
+        return random.randint(self.attack_min, self.attack_max)
     
     def take_damage(self, amount):
         """Enemy takes damage"""

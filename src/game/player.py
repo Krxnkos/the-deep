@@ -1,96 +1,93 @@
-class Player:
-    def __init__(self, name):
-        self.name = name
-        self.health = 100
-        self.inventory = []
-        self.current_location = None
-        self.discovered_locations = []
-        self.journal_entries = []
-        self.samples_collected = []
+"""
+Player module for The Deep game.
+This is a reference file that imports the Player class from its actual location.
+"""
 
-    def take_damage(self, amount):
-        """Take damage and return remaining health"""
-        self.health -= amount
-        if self.health < 0:
-            self.health = 0
-        return self.health
-    
-    def heal(self, amount):
-        """Heal and return new health value"""
-        self.health += amount
-        if self.health > 100:
+import random  # Add missing import for random.randint
+
+try:
+    # Try importing from player package
+    from player.player import Player
+except ModuleNotFoundError:
+    # Create a basic Player class definition if not found
+    class Player:
+        """Player class for the game."""
+        def __init__(self, name):
+            self.name = name
             self.health = 100
-        return self.health
-    
-    def add_to_inventory(self, item):
-        if item not in self.inventory:
-            self.inventory.append(item)
-            return True
-        else:
-            print(f"Item '{item.name}' is already in inventory.")
-            return False
-    
-    def remove_from_inventory(self, item):
-        if item in self.inventory:
-            self.inventory.remove(item)
-            return True
-        else:
-            print(f"Item '{item.name}' not found in inventory.")
-            return False
-        
-    def show_inventory(self):
-        if self.inventory:
-            return "Inventory:\n" + "\n".join([item.name for item in self.inventory])
-        else:
-            return "Inventory is empty."
-    
-    def set_location(self, location):
-        """Set player's current location and add to discovered locations"""
-        self.current_location = location
-        if location not in self.discovered_locations:
-            self.discovered_locations.append(location)
-    
-    def add_journal_entry(self, entry):
-        """Add a journal entry"""
-        self.journal_entries.append(entry)
-        print("New journal entry added.")
-    
-    def read_journal(self):
-        """Read all journal entries"""
-        if not self.journal_entries:
-            return "Your journal is empty."
-        
-        return "Journal entries:\n\n" + "\n\n".join(self.journal_entries)
-    
-    def add_sample(self, sample_name, sample_data):
-        """Add an environmental sample with analysis data"""
-        sample = {
-            "name": sample_name,
-            "data": sample_data,
-            "location": self.current_location
-        }
-        self.samples_collected.append(sample)
-        print(f"Sample collected: {sample_name}")
-        
-    def view_samples(self):
-        """View all collected environmental samples"""
-        if not self.samples_collected:
-            return "No samples collected yet."
+            self.max_health = 100
+            self.inventory = []
+            self.journal = []
+            self.samples = []
+            self.current_location = None  # Track current location
+            self.equipped_weapon = None   # Track equipped weapon
             
-        result = "Collected samples:\n"
-        for sample in self.samples_collected:
-            result += f"\n- {sample['name']}: {sample['data']}"
-        
-        return result
-
-    def get_status(self):
-        """Get complete player status"""
-        return {
-            "name": self.name,
-            "health": self.health,
-            "inventory": [item.name for item in self.inventory],
-            "current_location": self.current_location,
-            "discovered_locations": self.discovered_locations,
-            "journal_entries": len(self.journal_entries),
-            "samples_collected": len(self.samples_collected)
-        }
+        def attack(self):
+            """Return damage for an attack, including weapon bonus"""
+            base_damage = random.randint(5, 15)
+            weapon_bonus = 0
+            
+            # Add weapon damage if equipped
+            if self.equipped_weapon:
+                weapon_bonus = self.equipped_weapon.damage_bonus
+                
+            return base_damage + weapon_bonus
+            
+        def show_inventory(self):
+            """Return inventory as string"""
+            if not self.inventory:
+                return "Your inventory is empty."
+            return "Inventory:\n" + "\n".join([f"- {item.name}" for item in self.inventory])
+            
+        def read_journal(self):
+            """Return journal entries as string"""
+            if not self.journal:
+                return "Your journal is empty."
+            return "Journal:\n" + "\n".join(self.journal)
+            
+        def view_samples(self):
+            """Return collected samples as string"""
+            if not self.samples:
+                return "You haven't collected any samples yet."
+            return "Samples:\n" + "\n".join([f"- {sample}" for sample in self.samples])
+            
+        def set_location(self, location):
+            """Set the player's current location"""
+            self.current_location = location
+            
+        def add_journal_entry(self, entry):
+            """Add an entry to the player's journal"""
+            self.journal.append(entry)
+            return f"Added to journal: {entry}"
+            
+        def add_sample(self, sample_name):
+            """Add a sample to the player's collection"""
+            self.samples.append(sample_name)
+            return f"Added sample: {sample_name}"
+            
+        def has_item(self, item_name):
+            """Check if player has an item with the given name"""
+            for item in self.inventory:
+                if item.name.lower() == item_name.lower():
+                    return True
+            return False
+            
+        def get_item(self, item_name):
+            """Get an item from inventory by name"""
+            for item in self.inventory:
+                if item.name.lower() == item_name.lower():
+                    return item
+            return None
+            
+        def remove_item(self, item_name):
+            """Remove an item from inventory by name"""
+            for i, item in enumerate(self.inventory):
+                if item.name.lower() == item_name.lower():
+                    return self.inventory.pop(i)
+            return None
+            
+        def heal(self, amount):
+            """Heal the player by the specified amount"""
+            old_health = self.health
+            self.health = min(self.health + amount, self.max_health)
+            return self.health - old_health

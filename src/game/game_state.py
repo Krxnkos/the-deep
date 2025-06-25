@@ -1,34 +1,45 @@
+"""
+Game state module for The Deep game.
+Manages the game world, locations, and state.
+"""
+
+from world.locations import initialize_locations
+
 class GameState:
+    """Manages the game world state, including locations and game progression."""
+    
     def __init__(self):
-        self.player_health = 100
-        self.inventory = []
-        self.current_location = None
-        self.story_progress = 0
-
-    def update_health(self, amount):
-        self.player_health += amount
-        if self.player_health >100:
-            self.player_health = 100
-        elif self.player_health <= 0:
-            self.player_health = 0
-            self.game_over()
-    
-    def add_to_inventory(self, item):
-        self.inventory.append(item)
-
-    def remove_from_inventory(self, item):
-        if item in self.inventory:
-            self.inventory.remove(item)
+        """Initialize the game state with all locations."""
+        self.locations = initialize_locations()
+        
+        # Set the starting location
+        self.starting_location_id = "ship_deck"
+        self.current_location = self.get_location(self.starting_location_id)
+        
+        # Track game progression
+        self.visited_locations = set()
+        self.game_flags = {}
+        
+    def get_location(self, location_id):
+        """Get a location by its ID."""
+        if location_id in self.locations:
+            return self.locations[location_id]
         else:
-            print(f"Item '{item}' not found in inventory.")
-    
-    def set_location(self, location):
-        self.current_location = location
-    
-    def game_over(self):
-        print("Game Over! You have succumbed to the horros of the deep!")
-        # Additional game over logic can be added here, such as resetting the game or showing a game over screen.
-
-    def progress_story(self, amount):
-        self.story_progress += 1
-        # Additional logic for story progression can be added here, such as triggering events or changing locations.
+            # Return a default location if the ID is not found
+            return None
+            
+    def set_flag(self, flag_name, value=True):
+        """Set a game flag to track progression or events."""
+        self.game_flags[flag_name] = value
+        
+    def check_flag(self, flag_name):
+        """Check if a game flag is set."""
+        return self.game_flags.get(flag_name, False)
+        
+    def mark_location_visited(self, location_id):
+        """Mark a location as visited."""
+        self.visited_locations.add(location_id)
+        
+    def is_location_visited(self, location_id):
+        """Check if a location has been visited."""
+        return location_id in self.visited_locations

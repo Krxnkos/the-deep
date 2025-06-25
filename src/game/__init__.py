@@ -1,13 +1,11 @@
 """
-This module initializes the game package for The Deep adventure game.
+Game package initialization.
 """
 
-# Import necessary components for the game
-from .engine import GameEngine
-from .game_state import GameState
-from .player import Player
-
-# Initialize game components
-game_engine = GameEngine()
-game_state = GameState()
-player = Player("Explorer")  # Provide a default name for the player
+# Import key classes to make them available at package level
+try:
+    from .player import Player
+    from .engine import GameEngine
+except ImportError:
+    # Don't fail on import errors - let specific modules handle them
+    pass
