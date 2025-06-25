@@ -1,0 +1,44 @@
+{
+  "characters": [
+    {
+      "name": "Dr. Mira Elson",
+      "role": "Marine Biologist",
+      "backstory": "Former researcher at Erebus-9, left frantic notes warning about 'The Awakening' beneath the trench. Her fate is unknown, but she may appear in visions or flashbacks.",
+      "attributes": {
+        "health": 70,
+        "sanity": 50,
+        "skills": ["Research", "Analysis", "Survival"]
+      }
+    },
+    {
+      "name": "Captain Theo Nash",
+      "role": "Submarine Pilot",
+      "backstory": "A war veteran with PTSD, he guides players through the trench. His fate is influenced by player decisions, and he begins to hear voices as the story progresses.",
+      "attributes": {
+        "health": 80,
+        "sanity": 40,
+        "skills": ["Navigation", "Combat", "Leadership"]
+      }
+    },
+    {
+      "name": "Echo",
+      "role": "AI Assistant",
+      "backstory": "Originally designed to assist with oceanic data collection, Echo is now glitching and can be both helpful and cryptic. It speaks in fragments of past conversations.",
+      "attributes": {
+        "health": 100,
+        "sanity": 90,
+        "skills": ["Data Analysis", "Communication", "Hacking"]
+      }
+    },
+    {
+      "name": "The Tidecaller",
+      "role": "Mythic Entity",
+      "backstory": "A shapeless entity representing the ocean's wrath, it speaks through dreams and madness. Its existence may be real or a psychological manifestation of guilt and environmental ruin.",
+      "attributes": {
+        "health": "Unknown",
+        "sanity": "Unknown",
+        "skills": ["Manipulation", "Illusion", "Fear Induction"]
+      }
+    }
+  ]
+}
