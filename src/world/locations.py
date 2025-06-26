@@ -42,7 +42,7 @@ def initialize_locations():
     locations["ship_deck"] = Location(
         "ship_deck",
         "Research Vessel Deck",
-        "The main deck of your research vessel. Equipment is neatly organized, and the control panels hum with activity. The ocean stretches in all directions, remarkably calm today.",
+        "The main deck of your research vessel. Equipment is neatly organised, and the control panels hum with activity. The ocean stretches in all directions, remarkably calm today.",
         exits={"down": "observation_deck"},
         items=[get_item_by_id("binoculars")]
     )
@@ -50,7 +50,7 @@ def initialize_locations():
     locations["observation_deck"] = Location(
         "observation_deck",
         "Observation Deck",
-        "A specialized deck with reinforced glass panels allowing underwater viewing. Scientific equipment lines the walls, ready to analyze samples and data from your expedition.",
+        "A specialised deck with reinforced glass panels allowing underwater viewing. Scientific equipment lines the walls, ready to analyze samples and data from your expedition.",
         exits={"up": "ship_deck", "down": "diving_prep"},
         items=[get_item_by_id("sample_vial")]
     )
@@ -75,7 +75,7 @@ def initialize_locations():
     locations["shallow_cave"] = Location(
         "shallow_cave",
         "Shallow Marine Cave",
-        "A dimly lit underwater cave near the reef. Strange bioluminescent algae provide ghostly blue illumination. Garbage from the surface has accumulated here, carried by currents.",
+        "A dimly lit underwater cave near the reef. Strange bioluminescent algae provide ghostly blue illumination. Rubbish from the surface has accumulated here, carried by currents.",
         exits={"east": "coral_reef", "west": "fishing_trawler"},
         items=[get_item_by_id("plastic_sample")]
     )

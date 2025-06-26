@@ -7,7 +7,7 @@ python -c "import sys, os; sys.path.insert(0, os.path.dirname(os.getcwd())); sys
 
 if %errorlevel% neq 0 (
     echo.
-    echo An error occurred while starting the game in GUI mode.
+    echo An error occurred whilst starting the game in GUI mode.
     echo Please check the logs for details.
 )
 

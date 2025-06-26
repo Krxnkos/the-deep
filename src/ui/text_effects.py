@@ -1,6 +1,8 @@
 import sys
 import time
 import os
+import tkinter as tk
+from threading import Thread
 
 def print_typing_effect(text, delay=0.05):
     """
@@ -74,14 +76,13 @@ def print_menu(options, selected_index):
         else:
             print(f"  {option}")
 
-def typewriter_effect(text, delay=0.03, status_bar_refresh=None):
+def typewriter_effect(text, delay=0.5):  # Increased from 0.03 to 0.08 for slower effect
     """
     Display text with a typewriter effect.
     
     Args:
         text (str): The text to display
         delay (float): Delay between characters in seconds
-        status_bar_refresh (function): Optional function to refresh the status bar
     """
     # Process text to handle potential formatting issues
     lines = text.split("\n")
@@ -153,3 +154,90 @@ def horror_text_effect(text, flicker_count=3, delay=0.1):
     
     # Final display
     print(text)
+
+class TypewriterEffect:
+    def __init__(self, text_widget, text, base_delay=0.3):
+        """
+        Initialize typewriter effect for GUI
+        
+        Args:
+            text_widget: tkinter Text or Label widget
+            text (str): The text to display
+            base_delay (float): Base delay between characters in seconds
+        """
+        self.text_widget = text_widget
+        self.text = text
+        self.base_delay = base_delay * 1000  # Convert to milliseconds
+        self.char_index = 0
+        self.is_running = False
+        self.pause_after_punctuation = {
+            '.': 2000,  # 2000ms (2 sec) pause after periods
+            '!': 2000,  # 2000ms pause after exclamation marks
+            '?': 2000,  # 2000ms pause after question marks
+            ',': 1000,  # 1000ms (1 sec) pause after commas
+            '\n': 1500, # 1500ms pause after new lines
+            ' ': 300,   # 300ms pause after spaces
+        }
+    
+    def start(self):
+        """Start the typewriter effect"""
+        self.char_index = 0
+        self.is_running = True
+        self._type_text()
+    
+    def stop(self):
+        """Stop the typewriter effect"""
+        self.is_running = False
+    
+    def _type_text(self):
+        """Type text character by character with dynamic delays"""
+        if not self.is_running:
+            return
+            
+        if self.char_index < len(self.text):
+            # Update the text
+            current_text = self.text[:self.char_index + 1]
+            self.text_widget.config(text=current_text)
+            
+            # Calculate delay for next character
+            current_char = self.text[self.char_index]
+            
+            # Base delay plus any additional pause for punctuation
+            next_delay = self.base_delay
+            if current_char in self.pause_after_punctuation:
+                next_delay += self.pause_after_punctuation[current_char]
+            
+            self.char_index += 1
+            
+            # Schedule next character with proper delay
+            self.text_widget.after(int(next_delay), self._type_text)
+
+def show_text_with_effect(text):
+    """
+    Display text with typewriter effect in a GUI window
+    
+    Args:
+        text (str): The text to display
+    """
+    root = tk.Tk()
+    root.title("The Deep")
+    root.geometry("600x400")
+    
+    # Configure the label with proper styling
+    label = tk.Label(
+        root,
+        text="",
+        wraplength=500,
+        justify=tk.LEFT,
+        font=("Courier", 14),
+        bg="black",
+        fg="green"
+    )
+    label.pack(padx=40, pady=40, expand=True, fill='both')
+    
+    # Create effect with much slower base delay
+    effect = TypewriterEffect(label, text, base_delay=0.3)  # 300ms between characters
+    effect.start()
+    
+    # Keep window running
+    root.mainloop()
